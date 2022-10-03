@@ -1,0 +1,15 @@
+<mongo-builder connection={}>
+
+connection = API_CONNECTION | MONGO_CONNECTION
+
+interface API_CONNECTION {
+  getCollections,
+  query
+}
+
+interface MONGO_CONNECTION {
+  
+}
+
+MONGO_CONNECTION -> internal APIs -> make query
+API_CONNECTION -> provided APIs -> make query

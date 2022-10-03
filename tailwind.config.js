@@ -2,7 +2,10 @@
 module.exports = {
   content: ["./public/**/*.html", "./src/**/*.{html,js,vue,tsx,ts}"],
   theme: {
-    extend: {},
+    extend: {
+      opacity: ["disabled"],
+      cursor: ["disabled"],
+    },
   },
-  plugins: [],
+  plugins: [require("@tailwindcss/forms")],
 };

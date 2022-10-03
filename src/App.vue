@@ -23,4 +23,10 @@ export default class App extends Vue {}
 
 <style>
 @import url("./index.css");
+html {
+  height: 100%;
+}
+body {
+  height: 100%;
+}
 </style>
