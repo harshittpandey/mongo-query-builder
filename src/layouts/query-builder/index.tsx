@@ -1,7 +1,7 @@
 import Vue, { VNode } from "vue";
 import { Component } from "vue-property-decorator";
 import { BasicLayout } from "@/components/layouts/basic-layout";
-import { Button, MultiSelect } from "@/components/lib-ui";
+import { Button, MultiSelect, Toggle } from "@/components/lib-ui";
 import { BUTTON_TYPE_ENUM } from "@/components/lib-ui/Button/Button";
 import JSONEditor, { SelectionPosition } from "jsoneditor";
 
@@ -113,22 +113,84 @@ class QueryBuilder extends Vue {
     );
   }
 
+  private databases: string[] = ["first db", "second db"];
+  private selectedDatabase = "";
+  selectDatabase(database: string) {
+    this.selectedDatabase = database;
+  }
+
+  private collections: string[] = ["first collection", "second collection"];
+  private selectedCollection = "";
+  selectCollection(collection: string) {
+    this.selectedCollection = collection;
+  }
+
+  private projections: string[] = ["first projection", "second projection"];
+  private selectedProjection = "";
+  selectProjection(collection: string) {
+    this.selectedCollection = collection;
+  }
+
+  private isCount = false;
+  handleCountToggle(enable: boolean) {
+    this.isCount = enable;
+  }
+
   render(): VNode {
     return (
       <BasicLayout>
         <template slot="left">
-          <div class="py-3 px-2">
-            <MultiSelect
-              class="my-4"
-              options={["first", "seconddddddseconddddddsecondddddd"]}
-            />
+          <div class="py-3 px-2 h-full">
+            <div class="flex">
+              <MultiSelect
+                class="my-4"
+                options={this.databases}
+                option={this.selectedDatabase}
+                onSelect={this.selectDatabase}
+                extraOpts={{
+                  placeholder: "Select Database",
+                  fixedClasses: "w-200 text-xs",
+                }}
+              />
+              <MultiSelect
+                class="my-4 mx-4"
+                options={this.collections}
+                option={this.selectedCollection}
+                onSelect={this.selectCollection}
+                extraOpts={{
+                  label: "Select Collection",
+                  placeholder: "Select Collection",
+                  fixedClasses: "w-200 text-xs",
+                }}
+              />
+            </div>
             <p class="mx-2 text-sm font-semibold">Query</p>
-            <div class="" ref="queryEditor"></div>
+            <div class="h-2/4" ref="queryEditor"></div>
+            <div>
+              <MultiSelect
+                class="my-4"
+                options={this.projections}
+                option={this.selectedProjection}
+                onSelect={this.selectProjection}
+                extraOpts={{
+                  label: "Select Projection",
+                  placeholder: "Select Projection",
+                  fixedClasses: "w-200 text-xs",
+                }}
+              />
+            </div>
           </div>
         </template>
         <template slot="right">
           <div class="h-full py-3 px-3 flex flex-col">
-            <p class="mx-2 text-sm font-semibold">Results</p>
+            <div class="flex items-center justify-between">
+              <p class="mx-2 text-sm font-semibold">Results</p>
+              <Toggle
+                label="Count"
+                checked={this.isCount}
+                onChange={this.handleCountToggle}
+              />
+            </div>
             <div class="h-full flex-1" ref="resultPreview"></div>
           </div>
         </template>
