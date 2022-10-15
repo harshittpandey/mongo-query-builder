@@ -64,7 +64,6 @@ class QueryBuilder extends Vue {
   };
 
   private integrateJSONEditor(): void {
-    console.log("Inside integrateJSONEditor");
     this.editor = new JSONEditor(this.$refs.queryEditor, {
       mode: "code",
       mainMenuBar: false,

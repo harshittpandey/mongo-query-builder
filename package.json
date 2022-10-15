@@ -2,8 +2,10 @@
   "name": "mongodb-query-builder",
   "version": "0.1.0",
   "private": true,
+  "main": "./dist/mongo-query-builder.common.js",
   "scripts": {
     "serve": "vue-cli-service serve",
+    "build-dev": "vue-cli-service build --mode development --target lib --name mongo-query-builder src/main.ts",
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint src/",

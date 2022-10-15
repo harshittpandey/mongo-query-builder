@@ -45,17 +45,20 @@ class APIConnectionStrategy {
     endpoints: Record<ENDPOINTS_ENUM, FETCH_RESPONSE_HANDLER>
   ): void {
     Object.entries(endpoints).forEach(([epEnum, epHandler]) => {
-      if (this.isValidEndpoint(epEnum)) {
-        this.endpoints[epEnum as ENDPOINTS_ENUM] = epHandler;
-      }
+      this.endpoints[epEnum as ENDPOINTS_ENUM] = epHandler;
+      // if (this.isValidEndpoint(epEnum)) {
+      // }
     });
   }
 
   private async triggerAllEndpoints(): Promise<void> {
     const promises: Promise<object>[] = [];
-    Object.values(this.endpoints).forEach((endpoint) => {
-      promises.push(endpoint());
-    });
+    if (this.endpoints.getDatabaseList) {
+      promises.push(this.endpoints.getDatabaseList());
+    }
+    // Object.values(this.endpoints).forEach((endpoint) => {
+    //   promises.push(endpoint());
+    // });
     Promise.all(promises).then(
       ([databaseList, collectionsList, sampleDocument, queryResults]) => {
         this.setDatabaseList((databaseList as DatabaseItems) || []);

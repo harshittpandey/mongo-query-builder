@@ -1,3 +1,4 @@
+// use Vite
 import Vue, { VNode } from "vue";
 import { Component, Prop } from "vue-property-decorator";
 import {
@@ -14,7 +15,7 @@ import { QueryBuilder } from "@/layouts/query-builder";
 
 import "./index.css";
 
-@Component({ name: "App" })
+@Component({ name: "MongoQueryBuilder" })
 class App extends Vue {
   @Prop({
     type: String,
@@ -53,4 +54,5 @@ class App extends Vue {
   }
 }
 
+export default App;
 export { App };
