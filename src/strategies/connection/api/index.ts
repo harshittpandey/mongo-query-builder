@@ -1,5 +1,11 @@
 // use pinia
-import { DatabaseItems } from "@/types/database";
+import {
+  Collections,
+  DatabaseItems,
+  DatabaseItemSecondary,
+  InternalDatabaseItems,
+  QueryParams,
+} from "@/types/database";
 export enum ENDPOINTS_ENUM {
   GET_DATATYPE_LIST = "getDatabaseList",
   GET_COLLECTIONS = "getCollections",
@@ -19,7 +25,7 @@ class APIConnectionStrategy {
     [ENDPOINTS_ENUM.GET_SAMPLE_DOCUMENT]: () => Promise.resolve({}),
     [ENDPOINTS_ENUM.GET_QUERY_RESULTS]: () => Promise.resolve({}),
   };
-  private databaseList: DatabaseItems = [];
+  private databaseList: InternalDatabaseItems = [];
 
   constructor(endpoints: ENDPOINTS_TYPE) {
     this.resetEndpoints();
@@ -56,25 +62,62 @@ class APIConnectionStrategy {
     if (this.endpoints.getDatabaseList) {
       promises.push(this.endpoints.getDatabaseList());
     }
-    // Object.values(this.endpoints).forEach((endpoint) => {
-    //   promises.push(endpoint());
-    // });
-    Promise.all(promises).then(
-      ([databaseList, collectionsList, sampleDocument, queryResults]) => {
-        this.setDatabaseList((databaseList as DatabaseItems) || []);
+    Promise.all(promises).then(([databaseList]) => {
+      this.setDatabaseList((databaseList as DatabaseItems) || []);
+    });
+  }
+
+  private async triggerEndpoint(
+    endpoint: ENDPOINTS_ENUM,
+    ...args: any[]
+  ): Promise<object> {
+    return new Promise((resolve, reject) => {
+      try {
+        if (!this.endpoints[endpoint]) throw new Error("Invalid Endpoint");
+        this.endpoints[endpoint](...(args as [])).then((res) => resolve(res));
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
+
+  get getDatabaseNames(): string[] {
+    return this.databaseList.map((dbItem) => dbItem.name || "");
+  }
+
+  private setDatabaseList(databaseItems: DatabaseItems): void {
+    const _databaseItems: InternalDatabaseItems = (databaseItems || []).map(
+      (db) => {
+        if (typeof db === "string")
+          return { id: db, name: db } as DatabaseItemSecondary;
+        else return db as DatabaseItemSecondary;
       }
     );
+    this.databaseList = _databaseItems;
   }
 
-  private triggerEndpoint(endpoint: ENDPOINTS_ENUM): object {
+  async getCollections(database: string) {
+    const selectedDB = this.databaseList.find((db) => db.id === database);
+    if (selectedDB) {
+      const collections: object = await this.triggerEndpoint(
+        ENDPOINTS_ENUM.GET_COLLECTIONS,
+        selectedDB.id
+      );
+      return collections as Collections;
+    }
+    return [];
+  }
+
+  async query(q: QueryParams) {
+    const selectedDB = this.databaseList.find((db) => db.id === q.db);
+    if (selectedDB) {
+      const queryResults = await this.triggerEndpoint(
+        ENDPOINTS_ENUM.GET_QUERY_RESULTS,
+        q
+      );
+      return queryResults;
+    }
     return {};
-  }
-
-  private setDatabaseList(databaseList: DatabaseItems): void {
-    this.databaseList = databaseList.map((db) => ({
-      id: db.id,
-      name: db.name,
-    }));
   }
 }
 

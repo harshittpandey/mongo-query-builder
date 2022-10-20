@@ -1,11 +1,13 @@
 import Vue, { VNode } from "vue";
-import { Component } from "vue-property-decorator";
+import { Component, Prop } from "vue-property-decorator";
 import { BasicLayout } from "@/components/layouts/basic-layout";
 import { Button, MultiSelect, Toggle } from "@/components/lib-ui";
 import { BUTTON_TYPE_ENUM } from "@/components/lib-ui/Button/Button";
 import JSONEditor, { SelectionPosition } from "jsoneditor";
 
 import "jsoneditor/dist/jsoneditor.min.css";
+import { CONNECTION_HANDLER_TYPE } from "@/types/connection";
+import { Collections, DatabaseItems, Collection } from "@/types/database";
 
 const DUMMY_DATA = [
   {
@@ -63,6 +65,13 @@ class QueryBuilder extends Vue {
     resultPreview: HTMLDivElement;
   };
 
+  @Prop({
+    type: Object,
+    required: true,
+    default: () => ({}),
+  })
+  private readonly connectionHandler!: CONNECTION_HANDLER_TYPE;
+
   private integrateJSONEditor(): void {
     this.editor = new JSONEditor(this.$refs.queryEditor, {
       mode: "code",
@@ -71,20 +80,25 @@ class QueryBuilder extends Vue {
     });
   }
 
-  mounted(): void {
-    this.integrateJSONEditor();
-    this.mongoResult = new JSONEditor(this.$refs.resultPreview, {
-      mode: "code",
-      mainMenuBar: false,
-      statusBar: false,
-      onTextSelectionChange: this.handleResultTextSelection,
-      onEditable: () => false, // read-only
-    });
-  }
-
   fetchMongoResults(): void {
-    console.log("Fetching mongo results for", this.editor?.get());
-    this.mongoResult?.set(DUMMY_DATA);
+    console.group("Fetching mongo results for");
+    console.log("query", this.editor?.get());
+    console.log("selectDatabase", this.selectedDatabase);
+    console.log("selectedCollection", this.selectedCollection);
+    console.groupEnd();
+    this.connectionHandler
+      .query({
+        db: this.selectedDatabase,
+        collection: this.selectedCollection,
+        query: {
+          query: this.editor?.get(),
+          count: false,
+        },
+      })
+      .then((res) => {
+        console.log("Inside QueryBuilder", res);
+        if (typeof res === "object") this.mongoResult?.set(res);
+      });
   }
 
   handleResultTextSelection(
@@ -112,27 +126,55 @@ class QueryBuilder extends Vue {
     );
   }
 
-  private databases: string[] = ["first db", "second db"];
+  // private databases: DatabaseItems = [];
+  get databases(): string[] {
+    return this.connectionHandler?.getDatabaseNames;
+  }
   private selectedDatabase = "";
   selectDatabase(database: string) {
     this.selectedDatabase = database;
+    this.populateCollections(database);
   }
 
-  private collections: string[] = ["first collection", "second collection"];
+  private collections: Collections = [];
+  get collectionNames() {
+    return this.collections.map((c) => c.name || "");
+  }
+  private populateCollections(database: string) {
+    this.connectionHandler
+      .getCollections(database)
+      .then((collections: Collections) => {
+        this.collections = collections;
+      });
+  }
   private selectedCollection = "";
   selectCollection(collection: string) {
-    this.selectedCollection = collection;
+    const _collection: Collection | undefined = this.collections.find(
+      (c) => c.name === collection
+    );
+    if (_collection) this.selectedCollection = _collection.name || "";
   }
 
   private projections: string[] = ["first projection", "second projection"];
   private selectedProjection = "";
-  selectProjection(collection: string) {
-    this.selectedCollection = collection;
+  handleProjectionSelect() {
+    console.log("handleProjectionSelect", this.selectedProjection);
   }
 
   private isCount = false;
   handleCountToggle(enable: boolean) {
     this.isCount = enable;
+  }
+
+  mounted(): void {
+    this.integrateJSONEditor();
+    this.mongoResult = new JSONEditor(this.$refs.resultPreview, {
+      mode: "code",
+      mainMenuBar: false,
+      statusBar: false,
+      onTextSelectionChange: this.handleResultTextSelection,
+      onEditable: () => false, // read-only
+    });
   }
 
   render(): VNode {
@@ -153,7 +195,7 @@ class QueryBuilder extends Vue {
               />
               <MultiSelect
                 class="my-4 mx-4"
-                options={this.collections}
+                options={this.collectionNames}
                 option={this.selectedCollection}
                 onSelect={this.selectCollection}
                 extraOpts={{
@@ -170,7 +212,7 @@ class QueryBuilder extends Vue {
                 class="my-4"
                 options={this.projections}
                 option={this.selectedProjection}
-                onSelect={this.selectProjection}
+                onSelect={this.handleProjectionSelect}
                 extraOpts={{
                   label: "Select Projection",
                   placeholder: "Select Projection",

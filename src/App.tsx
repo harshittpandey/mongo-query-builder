@@ -35,7 +35,12 @@ class App extends Vue {
   })
   private connectionEndpoints!: ENDPOINTS_TYPE;
 
-  private connectionHandler: CONNECTION_HANDLER_TYPE | null = null;
+  private connectionHandler: CONNECTION_HANDLER_TYPE =
+    {} as CONNECTION_HANDLER_TYPE;
+
+  get isConnectionHandlerActive() {
+    return Object.keys(this.connectionHandler).length > 0;
+  }
 
   mounted() {
     if (this.connection === CONNECTION.API) {
@@ -48,7 +53,9 @@ class App extends Vue {
   render(): VNode {
     return (
       <div id="app">
-        <QueryBuilder />
+        {this.isConnectionHandlerActive && (
+          <QueryBuilder connectionHandler={this.connectionHandler} />
+        )}
       </div>
     );
   }
