@@ -23,8 +23,8 @@ class LayoutContent extends Vue {
   })
   private readonly rightCollapse!: boolean;
 
-  private internalLeftCollapse = false;
-  private internalRightCollapse = false;
+  private internalLeftCollapse = true;
+  private internalRightCollapse = true;
 
   @Watch("leftCollapse")
   onLeftCollapseChange(isCollapsed: boolean) {
@@ -73,27 +73,38 @@ class LayoutContent extends Vue {
       this.internalRightCollapse ? "minimized" : ""
     }`;
 
+    const collapseIconBuilder = (
+      baseClass: string,
+      classExtension: string,
+      clickHandler: () => void
+    ) => {
+      return (
+        <span
+          class={`${baseClass} ${classExtension}`}
+          v-on:click={clickHandler}
+        >
+          {chevronRight}
+        </span>
+      );
+    };
+
     return (
       <div class="layout-content flex">
         <div class={leftWrapperClass}>
           <div class="layout-container mt-6 px-4 pb-3">{this.$slots.left}</div>
         </div>
         <div class="middle-wrapper relative w-3/6 grow border-l-1 border-r-1 border-primary">
-          <span
-            class={`left-wrapper-arrow-icon ${
-              this.internalLeftCollapse ? "" : "rotate-180"
-            }`}
-          >
-            {chevronRight}
-          </span>
+          {collapseIconBuilder(
+            "left-wrapper-arrow-icon",
+            this.internalLeftCollapse ? "" : "rotate-180",
+            this.toggleLeftWrapperCollapse
+          )}
           {this.$slots.center}
-          <span
-            class={`right-wrapper-arrow-icon ${
-              this.internalRightCollapse ? "rotate-180" : ""
-            }`}
-          >
-            {chevronRight}
-          </span>
+          {collapseIconBuilder(
+            "right-wrapper-arrow-icon",
+            this.internalRightCollapse ? "rotate-180" : "",
+            this.toggleRightWrapperCollapse
+          )}
         </div>
         <div class={rightWrapperClass}>{this.$slots.right}</div>
       </div>
