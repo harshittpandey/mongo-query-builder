@@ -44,7 +44,9 @@ class Button extends Vue {
   render() {
     const clickHandler = () => this.$emit(Button.EVENT_CLICK);
     return (
-      <button class={this.buttonBUTTON_TYPE_ENUM} onClick={clickHandler}>
+      <button class={this.buttonBUTTON_TYPE_ENUM}>
+        {" "}
+        {/* onClick={clickHandler} */}
         {this.$slots.default}
       </button>
     );

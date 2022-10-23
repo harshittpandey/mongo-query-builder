@@ -8,3 +8,27 @@ html {
 body {
   height: 100%;
 }
+
+:root {
+  --primary-svg-fill: #25265e;
+  --editor-text-color: #25265e;
+  --primary-background: #fff;
+  --output-header-color: #fbfbfb;
+  --secondary-background: #f5f5f5;
+  --primary-border-color: #d3dce6;
+  --secondary-text-color: #007efa;
+  --primary-button-color: #fff;
+  --mob-view-border-color: #0556f3;
+  --base-background-color: #f9fafc;
+  --secondary-border-color: #0556f3;
+  --hover-background-color: #0047d1;
+  --table-background-color: #f8faff;
+  --basic-background-color: #fff;
+  --primary-border-bar-color: #d3dce6;
+  --plusbtn-background-color: #f5f8ff;
+  --primary-color: rgba(37,38,94,.87);
+  --seconday-color: rgba(37,38,94,.67);
+  --hover-color: var(--secondary-background);
+  --primary-box-shadow: rgba(5,151,234,.08);
+  --primary-option-box-shadow: 0px 2px 8px rgba(11,1,1,.08);
+}

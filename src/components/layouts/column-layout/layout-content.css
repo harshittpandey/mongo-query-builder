@@ -1,0 +1,47 @@
+.layout-content {
+  height: calc(100vh - 52px)
+}
+
+.layout-content .left-wrapper {
+  min-width: 203px;
+}
+
+.layout-content .left-wrapper.minimized,
+.layout-content .right-wrapper.minimized {
+  width: 40px;
+  min-width: 40px;
+}
+
+.layout-content .middle-wrapper {
+  height: calc(100vh - 53px);
+}
+
+.layout-content .right-wrapper {
+  width: calc(100vw - 50% - 203px);
+}
+
+.layout-content .middle-wrapper .left-wrapper-arrow-icon {
+  position: absolute;
+  background-color: var(--primary-background);
+  z-index: 1;
+
+  border: 1px solid var(--primary-border-color);
+  border-radius: 4px;
+  padding: 3px;
+  top: 12px;
+  left: -12px;
+  cursor: pointer;
+}
+
+.layout-content .middle-wrapper .right-wrapper-arrow-icon {
+  position: absolute;
+  background-color: var(--primary-background);
+  z-index: 1;
+
+  border: 1px solid var(--primary-border-color);
+  border-radius: 4px;
+  padding: 3px;
+  top: 12px;
+  right: -12px;
+  cursor: pointer;
+}

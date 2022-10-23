@@ -11,6 +11,21 @@ module.exports = {
         300: "300px",
         400: "400px",
       },
+      colors: {
+        primary: "var(--primary-color)",
+        secondary: "var(--secondary-color)",
+      },
+      backgroundColor: {
+        primary: "var(--primary-background)",
+        secondary: "var(--secondary-background)",
+      },
+      borderColor: {
+        primary: "var(--primary-border-color)",
+        secondary: "var(--secondary-border-color)",
+      },
+      borderWidth: {
+        1: "1px",
+      },
     },
   },
   plugins: [require("@tailwindcss/forms")],
