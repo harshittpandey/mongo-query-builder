@@ -23,8 +23,8 @@ class LayoutContent extends Vue {
   })
   private readonly rightCollapse!: boolean;
 
-  private internalLeftCollapse = true;
-  private internalRightCollapse = true;
+  private internalLeftCollapse = false;
+  private internalRightCollapse = false;
 
   @Watch("leftCollapse")
   onLeftCollapseChange(isCollapsed: boolean) {

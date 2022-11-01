@@ -13,11 +13,15 @@ module.exports = {
       },
       colors: {
         primary: "var(--primary-color)",
-        secondary: "var(--secondary-color)",
+        secondary: "var(--seconday-color)",
+        editorText: "var(--editor-text-color)",
+        secondaryText: "var(--secondary-text-color)",
+        primaryButton: "var(--primary-button-color)",
       },
       backgroundColor: {
         primary: "var(--primary-background)",
         secondary: "var(--secondary-background)",
+        secondaryBorder: "var(--secondary-border-color)",
       },
       borderColor: {
         primary: "var(--primary-border-color)",

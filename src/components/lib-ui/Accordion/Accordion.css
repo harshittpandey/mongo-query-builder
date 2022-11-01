@@ -1,0 +1,20 @@
+.content-item::before {
+  content: "";
+}
+
+.content-item {
+  border-left: 1px solid var(--primary-border-bar-color);
+}
+
+.content-item .text::before {
+  content: "";
+  position: absolute;
+  position: absolute;
+  top: 50%;
+  left: 0px;
+  bottom: 50%;
+  width: 10px;
+  border: 1px solid var(--primary-border-bar-color);
+  border-top: 0 transparent;
+  border-right: 0 transparent;
+}
