@@ -1,0 +1,8 @@
+#resultPreview {
+  height: calc(100% - 48px);
+}
+
+#resultPreview .jsoneditor.jsoneditor-mode-code {
+  border: none !important;
+  background: var(--secondary-background) !important;
+}

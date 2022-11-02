@@ -91,7 +91,13 @@ class LayoutContent extends Vue {
     return (
       <div class="layout-content flex">
         <div class={leftWrapperClass}>
-          <div class="layout-container mt-6 px-4 pb-3">{this.$slots.left}</div>
+          <div
+            class={`layout-container mt-6 px-4 pb-3 ${
+              this.internalLeftCollapse ? "hidden" : ""
+            }`}
+          >
+            {this.$slots.left}
+          </div>
         </div>
         <div class="middle-wrapper relative w-3/6 grow border-l-1 border-r-1 border-primary">
           {collapseIconBuilder(
@@ -106,7 +112,11 @@ class LayoutContent extends Vue {
             this.toggleRightWrapperCollapse
           )}
         </div>
-        <div class={rightWrapperClass}>{this.$slots.right}</div>
+        <div class={rightWrapperClass}>
+          <div class={`h-full ${this.internalRightCollapse ? "hidden" : ""}`}>
+            {this.$slots.right}
+          </div>
+        </div>
       </div>
     );
   }

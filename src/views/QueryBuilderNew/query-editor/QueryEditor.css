@@ -1,0 +1,17 @@
+#queryEditor {
+  height: calc(100% - 48px);
+}
+
+#queryEditor .ace_gutter {
+  display: none !important;
+}
+
+#queryEditor .ace_scroller {
+  left: 0px !important;
+  background: var(--secondary-background) !important;
+}
+
+#queryEditor .jsoneditor.jsoneditor-mode-code {
+  border: none !important;
+  background: var(--secondary-background) !important;
+}
