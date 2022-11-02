@@ -21,14 +21,26 @@ class LayoutContent extends Vue {
     type: Boolean,
     default: false,
   })
+  private readonly middleCollapse!: boolean;
+
+  @Prop({
+    type: Boolean,
+    default: false,
+  })
   private readonly rightCollapse!: boolean;
 
   private internalLeftCollapse = false;
+  private internalMiddleCollapse = false;
   private internalRightCollapse = false;
 
   @Watch("leftCollapse")
   onLeftCollapseChange(isCollapsed: boolean) {
     this.internalLeftCollapse = isCollapsed;
+  }
+
+  @Watch("middleCollapse")
+  onMiddleCollapseChange(isCollapsed: boolean) {
+    this.internalMiddleCollapse = isCollapsed;
   }
 
   @Watch("rightCollapse")
@@ -38,6 +50,10 @@ class LayoutContent extends Vue {
 
   private toggleLeftWrapperCollapse(): void {
     this.internalLeftCollapse = !this.internalLeftCollapse;
+  }
+
+  private toggleMiddleWrapperCollapse(): void {
+    this.internalMiddleCollapse = !this.internalMiddleCollapse;
   }
 
   private toggleRightWrapperCollapse(): void {
@@ -69,9 +85,11 @@ class LayoutContent extends Vue {
       this.internalLeftCollapse ? "minimized" : ""
     }`;
 
-    const rightWrapperClass = `right-wrapper relative bg-primary overflow-y-auto ${
-      this.internalRightCollapse ? "minimized" : ""
+    const middleWrapperClass = `middle-wrapper relative w-3/6 border-l-1 border-r-1 border-primary ${
+      this.internalMiddleCollapse ? "minimized" : ""
     }`;
+
+    const rightWrapperClass = `right-wrapper w-3/6 grow relative bg-primary overflow-y-auto`;
 
     const collapseIconBuilder = (
       baseClass: string,
@@ -99,17 +117,19 @@ class LayoutContent extends Vue {
             {this.$slots.left}
           </div>
         </div>
-        <div class="middle-wrapper relative w-3/6 grow border-l-1 border-r-1 border-primary">
+        <div class={middleWrapperClass}>
           {collapseIconBuilder(
             "left-wrapper-arrow-icon",
             this.internalLeftCollapse ? "" : "rotate-180",
             this.toggleLeftWrapperCollapse
           )}
-          {this.$slots.center}
+          <div class={`h-full ${this.internalMiddleCollapse ? "hidden" : ""}`}>
+            {this.$slots.center}
+          </div>
           {collapseIconBuilder(
             "right-wrapper-arrow-icon",
-            this.internalRightCollapse ? "rotate-180" : "",
-            this.toggleRightWrapperCollapse
+            this.internalMiddleCollapse ? "" : "rotate-180",
+            this.toggleMiddleWrapperCollapse
           )}
         </div>
         <div class={rightWrapperClass}>

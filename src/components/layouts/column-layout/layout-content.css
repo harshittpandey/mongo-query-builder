@@ -4,9 +4,11 @@
 
 .layout-content .left-wrapper {
   min-width: 203px;
+  max-width: 203px;
 }
 
 .layout-content .left-wrapper.minimized,
+.layout-content .middle-wrapper.minimized,
 .layout-content .right-wrapper.minimized {
   width: 40px;
   min-width: 40px;

@@ -3,7 +3,7 @@
 }
 
 .content-item {
-  border-left: 1px solid var(--primary-border-bar-color);
+  border-left: 2px solid var(--primary-border-bar-color);
 }
 
 .content-item .text::before {
@@ -14,7 +14,11 @@
   left: 0px;
   bottom: 50%;
   width: 10px;
-  border: 1px solid var(--primary-border-bar-color);
+  border: 2px solid var(--primary-border-bar-color);
   border-top: 0 transparent;
   border-right: 0 transparent;
+}
+
+.svg-view {
+  fill: var(--primary-svg-fill)
 }

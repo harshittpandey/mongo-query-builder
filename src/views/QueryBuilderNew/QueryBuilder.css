@@ -1,0 +1,11 @@
+.editor-btn {
+  border: 1px solid var(--primary-border-color);
+  padding: 4px;
+  cursor: pointer;
+  border-radius: 2px;
+  background-color: initial;
+}
+
+.svg-view-stroke {
+  stroke: var(--primary-svg-fill);
+}

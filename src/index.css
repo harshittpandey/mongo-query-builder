@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -7,6 +8,10 @@ html {
 }
 body {
   height: 100%;
+}
+
+.font-roboto {
+  font-family: 'Roboto', sans-serif;
 }
 
 :root {
@@ -32,3 +37,28 @@ body {
   --primary-box-shadow: rgba(5,151,234,.08);
   --primary-option-box-shadow: 0px 2px 8px rgba(11,1,1,.08);
 }
+
+/* dark theme */
+/* :root[data-theme=dark] {
+  --primary-color: #fff;
+  --seconday-color: #fff;
+  --primary-box-shadow: #fff;
+  --primary-svg-fill: #fff;
+  --editor-text-color: #fff;
+  --primary-background: #1f2023;
+  --output-header-color: #1f2023;
+  --secondary-background: #1c2130;
+  --secondary-text-color: #01c3dd;
+  --primary-button-color: #fff;
+  --mob-view-border-color: #01c3dd;
+  --base-background-color: #1f2023;
+  --secondary-border-color: #0556f3;
+  --hover-background-color: #0047d1;
+  --table-background-color: #1f2023;
+  --basic-background-color: #2d2f34;
+  --primary-border-bar-color: #fff;
+  --plusbtn-background-color: #f5f8ff;
+  --hover-color: var(--secondary-border-color);
+  --primary-border-color: hsla(0,0%,100%,.2);
+  --primary-option-box-shadow: 0px 2px 8px hsla(0,0%,100%,.2);
+} */
