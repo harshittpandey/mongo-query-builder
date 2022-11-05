@@ -25,6 +25,10 @@ class QueryEditor extends Vue {
     });
   }
 
+  getQuery(): void {
+    return this.queryBuilder?.get();
+  }
+
   mounted(): void {
     this.integrateJSONEditor();
   }

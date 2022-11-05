@@ -3,6 +3,8 @@ import App from "./App";
 import router from "./router";
 import VueTailwind from "vue-tailwind";
 
+import API from "./stash/ApiTests";
+
 import "./index.css";
 
 Vue.use(VueTailwind, {});
@@ -11,7 +13,8 @@ Vue.config.productionTip = false;
 
 new Vue({
   router,
-  render: (h) => h(App),
+  render: (h) =>
+    h(App, { props: { connection: "API", connectionEndpoints: API } }),
 }).$mount("#app");
 
 export default App;

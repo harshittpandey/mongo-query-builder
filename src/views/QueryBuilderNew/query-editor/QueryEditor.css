@@ -14,4 +14,9 @@
 #queryEditor .jsoneditor.jsoneditor-mode-code {
   border: none !important;
   background: var(--secondary-background) !important;
+  height: 100%;
+}
+
+#queryEditor .jsoneditor.jsoneditor-mode-code .jsoneditor-outer {
+  height: 100%;
 }

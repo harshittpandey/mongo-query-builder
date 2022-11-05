@@ -1,4 +1,4 @@
-import { Component } from "vue-property-decorator";
+import { Component, Prop } from "vue-property-decorator";
 import Vue, { VNode } from "vue";
 
 import JSONEditor from "jsoneditor";
@@ -13,6 +13,12 @@ class ResultPreview extends Vue {
     resultPreview: HTMLDivElement;
   };
 
+  @Prop({
+    type: Number,
+    default: -1,
+  })
+  private readonly documentCount!: number;
+
   private integrateJSONEditor(): void {
     this.resultHandler = new JSONEditor(this.$refs.resultPreview, {
       mode: "code",
@@ -23,12 +29,26 @@ class ResultPreview extends Vue {
     });
   }
 
+  showResults(result: object = {}) {
+    if (this.documentCount === -1) {
+      this.resultHandler?.set(result);
+    }
+  }
+
   mounted(): void {
     this.integrateJSONEditor();
   }
 
   render(): VNode {
-    return <div class="w-full" id="resultPreview" ref="resultPreview"></div>;
+    const countUI = (
+      <div class="w-full h-5/6 flex items-center justify-center text-6xl font-bold text-editorText font-roboto">
+        {this.documentCount}
+      </div>
+    );
+    const jsonUI = (
+      <div class="w-full" id="resultPreview" ref="resultPreview"></div>
+    );
+    return this.documentCount === -1 ? jsonUI : countUI;
   }
 }
 
