@@ -23,7 +23,14 @@ class Navbar extends Vue {
   render(): VNode {
     return (
       <header class="iteration-2-navbar flex items-center justify-between py-3 px-6 bg-primary border-b-1 border-primary base-height">
-        <div class="text-sm font-medium font-roboto"> {this.navHeader} </div>
+        <div class="flex items-center text-sm font-medium font-roboto">
+          {this.navHeader}
+          {/*
+            <div class="mongodb-online-indicator ml-2">
+              <span class="blink"></span>
+            </div>
+          */}
+        </div>
         <div>{this.$slots.navActions}</div>
         <div>
           <button

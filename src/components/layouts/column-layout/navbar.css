@@ -1,3 +1,30 @@
 .iteration-2-navbar.base-height {
   height: 52px;
 }
+.mongodb-online-indicator {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+
+  background-color: #0fcc45;
+  border-radius: 50%;
+
+  position: relative;
+}
+.mongodb-online-indicator .blink {
+  display: block;
+  width: 12px;
+  height: 12px;
+
+  background-color: #0fcc45;
+  opacity: 0.7;
+  border-radius: 50%;
+
+  animation: blink 1s linear infinite;
+}
+/*Animations*/
+@keyframes blink {
+  100% { transform: scale(1.7, 1.7);
+    opacity: 0;
+  }
+}
