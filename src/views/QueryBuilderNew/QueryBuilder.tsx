@@ -50,7 +50,7 @@ class QueryBuilder extends Vue {
     this.selectedCollection = collection;
   }
 
-  private isCountEnabled = true;
+  private isCountEnabled = false;
   private documentCount = -1;
 
   handleAccordionItem([db, collection]: [string, string]) {

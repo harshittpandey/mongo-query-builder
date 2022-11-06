@@ -1,6 +1,6 @@
 // use Vite
 import Vue, { VNode } from "vue";
-import { Component, Prop } from "vue-property-decorator";
+import { Component, Prop, Provide, Watch } from "vue-property-decorator";
 import {
   CONNECTION_TYPE,
   CONNECTION,
@@ -11,13 +11,31 @@ import {
   ENDPOINTS_ENUM,
   ENDPOINTS_TYPE,
 } from "@/strategies/connection/api";
-// import { QueryBuilder } from "@/layouts/query-builder";
 import QueryBuilder from "./views/QueryBuilderNew/QueryBuilder";
 
 import "./index.css";
 
 @Component({ name: "MongoQueryBuilder" })
 class App extends Vue {
+  static readonly TOGGLE_ACTIVE_EVENT = "toggleActive";
+  static readonly DEFAULT_VISIBILITY = true;
+  @Prop({
+    type: Boolean,
+    default: App.DEFAULT_VISIBILITY,
+  })
+  private active!: boolean;
+  private editorVisibile = App.DEFAULT_VISIBILITY;
+
+  @Watch("active")
+  handleEditorVisibility(visible: boolean) {
+    this.editorVisibile = visible;
+  }
+
+  private hideBuilder() {
+    this.editorVisibile = false;
+  }
+  @Provide() hideBuilderHandler = this.hideBuilder;
+
   @Prop({
     type: String,
     validator: (connection: CONNECTION_TYPE) => {
@@ -39,8 +57,10 @@ class App extends Vue {
   private connectionHandler: CONNECTION_HANDLER_TYPE =
     {} as CONNECTION_HANDLER_TYPE;
 
-  get isConnectionHandlerActive() {
-    return Object.keys(this.connectionHandler).length > 0;
+  get isBuilderVisible() {
+    return (
+      this.editorVisibile && Object.keys(this.connectionHandler).length > 0
+    );
   }
 
   mounted() {
@@ -52,13 +72,29 @@ class App extends Vue {
   }
 
   render(): VNode {
-    return (
-      <div id="app">
-        {this.isConnectionHandlerActive && (
-          <QueryBuilder connectionHandler={this.connectionHandler} />
-        )}
+    const modalView = (
+      <div
+        class="relative z-10"
+        aria-labelledby="modal-title"
+        role="dialog"
+        aria-modal="true"
+      >
+        <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
+        <div class="fixed inset-0 z-10 overflow-y-auto">
+          <div class="flex w-full h-full">
+            <div class="relative transform bg-white overflow-hidden shadow-xl transition-all w-full h-full">
+              {this.isBuilderVisible && (
+                <QueryBuilder
+                  connectionHandler={this.connectionHandler}
+                  onToggleVisility={this.hideBuilder}
+                />
+              )}
+            </div>
+          </div>
+        </div>
       </div>
     );
+    return <div id="parent-app-mongodb-query-builder">{modalView}</div>;
   }
 }
 

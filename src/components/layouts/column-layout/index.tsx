@@ -8,7 +8,7 @@ import "./layout.css";
 @Component({ name: "Layout2" })
 class Layout2 extends Vue {
   @Prop({
-    default: "Hey there!!",
+    default: "MongoDB Query Builder",
   })
   private readonly pageHeader!: string;
 
