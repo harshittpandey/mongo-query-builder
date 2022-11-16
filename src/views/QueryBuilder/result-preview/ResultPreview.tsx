@@ -35,6 +35,10 @@ class ResultPreview extends Vue {
     }
   }
 
+  getResultsInText(): string {
+    return this.resultHandler?.getText() || "";
+  }
+
   mounted(): void {
     this.integrateJSONEditor();
   }

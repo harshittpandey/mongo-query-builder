@@ -1,8 +1,8 @@
-import { Component, Prop } from "vue-property-decorator";
+import { Component, Prop, Watch } from "vue-property-decorator";
 import Vue, { VNode } from "vue";
 
 import Layout2 from "@/components/layouts/column-layout";
-import Accordion from "@/components/lib-ui/Accordion/Accordion";
+import { Accordion } from "@/components/lib-ui";
 
 import QueryEditor from "./query-editor/QueryEditor";
 import OtherOptions from "./other-options/OtherOptions";
@@ -11,6 +11,8 @@ import ResultPreview from "./result-preview/ResultPreview";
 import "./QueryBuilder.css";
 import { CONNECTION_HANDLER_TYPE } from "@/types/connection";
 import { Collections, Collection } from "@/types/database";
+
+import { CopyTextToClipboard } from "@/utils/CopyToClipboard";
 
 type DatabaseId = string;
 type CollectionId = string;
@@ -58,6 +60,10 @@ class QueryBuilder extends Vue {
     this.handleCollectionSelect(collection);
   }
 
+  get isRunQueryDisabled(): boolean {
+    return !this.selectedDatabase || !this.selectedCollection;
+  }
+
   private runQuery() {
     this.documentCount = -1;
     const query = {
@@ -75,6 +81,24 @@ class QueryBuilder extends Vue {
       if (typeof res === "object") this.$refs.resultPreview?.showResults(res);
       else if (typeof res === "number") this.documentCount = res;
     });
+  }
+
+  private textCopied = false;
+  private showCopyIcon = true;
+  private toggleCopyIconVisibility(visible: boolean) {
+    this.showCopyIcon = visible;
+  }
+  private copyResults() {
+    this.textCopied = true;
+    CopyTextToClipboard(this.$refs.resultPreview.getResultsInText());
+    setTimeout(() => {
+      this.textCopied = false;
+    }, 2000);
+  }
+
+  @Watch("isCountEnabled", { immediate: true })
+  handleCountVisiblity(visible: boolean) {
+    this.toggleCopyIconVisibility(!visible);
   }
 
   render(): VNode {
@@ -122,9 +146,26 @@ class QueryBuilder extends Vue {
                   </div>
                 )}
                 <div class="flex-grow flex justify-end">
+                  <span class="inline-flex relative items-center">
+                    <label
+                      for="default-toggle"
+                      class="inline-flex relative items-center cursor-pointer mr-6"
+                    >
+                      <input
+                        type="checkbox"
+                        value=""
+                        id="default-toggle"
+                        class="sr-only peer"
+                        v-model={this.isCountEnabled}
+                      />
+                      <div class="w-11 h-6 bg-gray-200 rounded-full dark:bg-gray-300 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-secondaryBorder"></div>
+                      <span class="ml-2 text-sm text-edtiorText">Count</span>
+                    </label>
+                  </span>
                   <button
                     class="text-primaryButton bg-secondaryBorder rounded-sm text-sm font-medium cursor-pointer px-3 py-1 mr-6"
                     onClick={this.runQuery}
+                    disabled={this.isRunQueryDisabled}
                   >
                     Run Query
                   </button>
@@ -143,20 +184,21 @@ class QueryBuilder extends Vue {
         <template slot="right">
           <div class="editor-toolbar relative flex justify-between items-center h-12 border-b-1 border-primary">
             <div class="px-6">Result</div>
-            <label
-              for="default-toggle"
-              class="inline-flex relative items-center cursor-pointer mx-6"
-            >
-              <input
-                type="checkbox"
-                value=""
-                id="default-toggle"
-                class="sr-only peer"
-                v-model={this.isCountEnabled}
-              />
-              <div class="w-11 h-6 bg-gray-200 rounded-full dark:bg-gray-300 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-secondaryBorder"></div>
-              <span class="ml-3 text-sm text-edtiorText">Count</span>
-            </label>
+            <div class="mr-4">
+              {this.showCopyIcon && (
+                <button
+                  class={`rounded-sm text-xs cursor-pointer px-2 py-1 
+                ${
+                  this.textCopied
+                    ? " text-primaryButton bg-secondaryBorder"
+                    : " text-secondaryBorder bg-primary border-1 border-secondaryBorder"
+                }`}
+                  onClick={this.copyResults}
+                >
+                  {this.textCopied ? "Results Copied!!" : "Copy Results"}
+                </button>
+              )}
+            </div>
           </div>
           <ResultPreview
             ref="resultPreview"
