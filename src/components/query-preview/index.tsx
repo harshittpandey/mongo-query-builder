@@ -1,8 +1,5 @@
 import Vue, { VNode } from "vue";
 import { Component } from "vue-property-decorator";
-import { BasicLayout } from "@/components/layouts/basic-layout";
-import { Button } from "@/components/lib-ui";
-import { BUTTON_TYPE_ENUM } from "@/components/lib-ui/Button/Button";
 import JSONEditor, { SelectionPosition } from "jsoneditor";
 
 import "jsoneditor/dist/jsoneditor.min.css";

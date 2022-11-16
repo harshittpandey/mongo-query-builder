@@ -11,7 +11,7 @@ import {
   ENDPOINTS_ENUM,
   ENDPOINTS_TYPE,
 } from "@/strategies/connection/api";
-import QueryBuilder from "./views/QueryBuilderNew/QueryBuilder";
+import QueryBuilder from "./views/QueryBuilder/QueryBuilder";
 
 import "./index.css";
 
