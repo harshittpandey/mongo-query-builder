@@ -18,7 +18,7 @@ import "./index.css";
 @Component({ name: "MongoQueryBuilder" })
 class App extends Vue {
   static readonly TOGGLE_ACTIVE_EVENT = "toggleActive";
-  static readonly DEFAULT_VISIBILITY = true;
+  static readonly DEFAULT_VISIBILITY: boolean = true;
   @Prop({
     type: Boolean,
     default: App.DEFAULT_VISIBILITY,
@@ -26,7 +26,7 @@ class App extends Vue {
   private active!: boolean;
   private editorVisibile = App.DEFAULT_VISIBILITY;
 
-  @Watch("active")
+  @Watch("active", { immediate: true })
   handleEditorVisibility(visible: boolean) {
     this.editorVisibile = visible;
   }
@@ -83,18 +83,20 @@ class App extends Vue {
         <div class="fixed inset-0 z-10 overflow-y-auto">
           <div class="flex w-full h-full">
             <div class="relative transform bg-white overflow-hidden shadow-xl transition-all w-full h-full">
-              {this.isBuilderVisible && (
-                <QueryBuilder
-                  connectionHandler={this.connectionHandler}
-                  onToggleVisility={this.hideBuilder}
-                />
-              )}
+              <QueryBuilder
+                connectionHandler={this.connectionHandler}
+                onToggleVisility={this.hideBuilder}
+              />
             </div>
           </div>
         </div>
       </div>
     );
-    return <div id="parent-app-mongodb-query-builder">{modalView}</div>;
+    return (
+      <div id="parent-app-mongodb-query-builder">
+        {this.isBuilderVisible ? modalView : ""}
+      </div>
+    );
   }
 }
 

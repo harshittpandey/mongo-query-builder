@@ -44,9 +44,9 @@ class OtherOptions extends Vue {
   private skip: number = OtherOptions.DEFAULT_SKIP;
   private updateSkip(val: string): void {
     if (+val > OtherOptions.MAX_SKIP) {
-      this.limit = OtherOptions.MAX_SKIP;
+      this.skip = OtherOptions.MAX_SKIP;
     } else if (+val > 0) {
-      this.limit = +val;
+      this.skip = +val;
     } else this.limit = OtherOptions.DEFAULT_SKIP;
   }
 

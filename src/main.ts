@@ -1,6 +1,5 @@
 import Vue from "vue";
 import App from "./App";
-import router from "./router";
 import VueTailwind from "vue-tailwind";
 
 import API from "./stash/ApiTests";
@@ -12,9 +11,8 @@ Vue.use(VueTailwind, {});
 Vue.config.productionTip = false;
 
 new Vue({
-  router,
   render: (h) =>
     h(App, { props: { connection: "API", connectionEndpoints: API } }),
-}).$mount("#app");
+}).$mount("#mongo-query-builder-app");
 
 export default App;
