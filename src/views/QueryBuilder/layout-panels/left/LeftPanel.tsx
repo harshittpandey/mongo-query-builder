@@ -24,7 +24,7 @@ class LeftPanel extends Vue {
   })
   private readonly populateCollections!: COLLECTIONS_API;
 
-  private handleAccordionItem([db, collection]: [string, string]) {
+  private handleAccordionItem([db, collection]: [string, string]): void {
     this.$emit(LeftPanel.EVENT_SELECT_DB_AND_COLLECTION, [db, collection]);
   }
 

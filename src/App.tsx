@@ -1,4 +1,3 @@
-// use Vite
 import Vue, { VNode } from "vue";
 import { Component, Prop, Provide, Watch } from "vue-property-decorator";
 import {

@@ -56,7 +56,8 @@ class CenterPanel extends Vue {
 
     const runQueryButton = (
       <button
-        class="text-primaryButton bg-secondaryBorder rounded-sm text-sm font-medium cursor-pointer px-3 py-1 mr-6"
+        class={`text-primaryButton bg-secondaryBorder rounded-sm text-sm font-medium px-3 py-1 mr-6
+          ${this.isRunQueryDisabled ? " opacity-20" : ""}`}
         onClick={this.runQuery}
         disabled={this.isRunQueryDisabled}
       >

@@ -7,6 +7,9 @@ import { CopyTextToClipboard } from "@/utils/CopyToClipboard";
 @Component({ name: "RightPanel" })
 class RightPanel extends Vue {
   static readonly COPY_RESULTS = "copyResults";
+  static readonly RESULTS_LABEL = "Results";
+  static readonly RESULTS_COPIED = "Results Copied!!";
+  static readonly COPY_RESULTS_LABEL = "Copy Results";
 
   @Prop({
     type: Boolean,
@@ -24,7 +27,7 @@ class RightPanel extends Vue {
 
   private textCopied = false;
 
-  private copyResults() {
+  private copyResults(): void {
     this.textCopied = true;
     CopyTextToClipboard(this.resultPreviewHandler.getResultsInText());
     setTimeout(() => {
@@ -33,22 +36,22 @@ class RightPanel extends Vue {
   }
 
   render(): VNode {
+    const defaultButtonStyles = "rounded-sm text-xs cursor-pointer px-2 py-1 ";
+    const buttonStyles = this.textCopied
+      ? defaultButtonStyles + "text-primaryButton bg-secondaryBorder"
+      : defaultButtonStyles +
+        "text-secondaryBorder bg-primary border-1 border-secondaryBorder";
+    const buttonText = this.textCopied
+      ? RightPanel.RESULTS_COPIED
+      : RightPanel.COPY_RESULTS_LABEL;
     return (
       <div class="h-full">
         <div class="editor-toolbar relative flex justify-between items-center h-12 border-b-1 border-primary">
-          <div class="px-6">Result</div>
+          <div class="px-6">{RightPanel.RESULTS_LABEL}</div>
           <div class="mr-4">
             {this.showCopyIcon && (
-              <button
-                class={`rounded-sm text-xs cursor-pointer px-2 py-1 
-                ${
-                  this.textCopied
-                    ? " text-primaryButton bg-secondaryBorder"
-                    : " text-secondaryBorder bg-primary border-1 border-secondaryBorder"
-                }`}
-                onClick={this.copyResults}
-              >
-                {this.textCopied ? "Results Copied!!" : "Copy Results"}
+              <button class={buttonStyles} onClick={this.copyResults}>
+                {buttonText}
               </button>
             )}
           </div>
