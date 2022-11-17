@@ -1,29 +1,44 @@
+[![npm version](https://badge.fury.io/js/@harshittpandey%2Fmongodb-query-builder.svg)](https://badge.fury.io/js/@harshittpandey%2Fmongodb-query-builder)
 # mongodb-query-builder
 
-## Project setup
-```
-npm install
-```
+## Getting started
 
-### Compiles and hot-reloads for development
+Install mongodb-query-builder
 ```
-npm run serve
+npm install --save @harshittpandey/mongodb-query-builder
 ```
+Import mongodb-query-builder in your App
+```
+import MongoQueryBuilder from "@harshittpandey/mongodb-query-builder"
+components: {
+   MongoQueryBuilder
+}
+```
+### Props
+```javascript
+active: { // toggles the mongodb-query-builder (in fullscreen mode)
+  type: Boolean
+  default: true
+}
 
-### Compiles and minifies for production
-```
-npm run build
-```
+connection: { // selects a connection strategy
+  type: String,
+  allowed_values: "API" or "DIRECT"
+}
+/*
+"API" - expects connectionEndpoints.
+"DIRECT" - WIP
+*/
 
-### Run your unit tests
-```
-npm run test:unit
-```
+connectionEndpoints: {
+  type: Object,
+  allowed_values: ["getDatabaseList", "getCollections", "getSampleDocument", "getQueryResults"]
+}
+/*
+getDatabaseList - async method that returns list of databases
+getCollections(databaseName) - async method that returns list of collections for databaseName
+getSampleDocument(databaseName, collectionName) - WIP
+getQueryResults(databaseName, collectionName, query) - returns results for query(mongo-query)
+*/
 
-### Lints and fixes files
 ```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
