@@ -1,6 +1,6 @@
 {
   "name": "@harshittpandey/mongodb-query-builder",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "main": "./dist/mongo-query-builder.common.js",
   "scripts": {
     "serve": "vue-cli-service serve",
