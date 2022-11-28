@@ -42,3 +42,4 @@ getQueryResults(databaseName, collectionName, query) - returns results for query
 */
 
 ```
+![mongodb-query-builder](https://github.com/harshittpandey/mongo-query-builder/blob/master/image.png)
